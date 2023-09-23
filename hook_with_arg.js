@@ -2,7 +2,7 @@ setTimeout(() => {
 Java.perform(function() {
   Java.enumerateLoadedClasses({
     onMatch: function(className) {
-      if (className.startsWith("ru.bspb")) {
+      if (className.startsWith("com.example")) { // <-- replace here
         try {
           var classInstance = Java.use(className);
           var methods = classInstance.class.getDeclaredMethods();
@@ -35,7 +35,6 @@ Java.perform(function() {
 function hookMethod(classInstance, methodName, overloadIndex) {
   classInstance[methodName].overloads[overloadIndex].implementation = function() {
     for (var i = 0; i < arguments.length; i++) {
-      console.log(arguments[i]);
       if (String(arguments[i]).includes("1478")) { // <- Replace here
         console.log("Match found! Class:", classInstance.class.getName(), ", Method:", methodName, ", Overload Index:", overloadIndex);
         console.log("Arguments:", arguments);
