@@ -1,4 +1,7 @@
-setTimeout(() => {
+const matchText = "1478";
+setTimeout(main, 5000);
+
+function main() {
   Java.perform(() => {
     Java.enumerateLoadedClasses({
       onMatch: (className) => {
@@ -47,14 +50,27 @@ setTimeout(() => {
       },
     });
   });
-}, 5000);
-
-const hookMethod = (classInstance, methodName, overloadIndex) => {
-  classInstance[methodName].overloads[overloadIndex].implementation = () => {
-    for (let i = 0; i < arguments.length; i++) {
-      if (String(arguments[i]).includes("1478")) {
+}
+function hookMethod(classInstance, methodName, overloadIndex) {
+  classInstance[methodName].overloads[overloadIndex].implementation =
+    function () {
+      for (var i = 0; i < arguments.length; i++) {
+        if (String(arguments[i]).includes(matchText)) {
+          console.log(
+            "Match found! Class:",
+            classInstance.class.getName(),
+            ", Method:",
+            methodName,
+            ", Overload Index:",
+            overloadIndex,
+          );
+          console.log("Arguments:", arguments);
+        }
+      }
+      const rval = this[methodName].apply(this, arguments);
+      if (String(rval).includes(matchText)) {
         console.log(
-          "Match found in arguments! Class:",
+          "Match found in return value! Class:",
           classInstance.class.getName(),
           ", Method:",
           methodName,
@@ -63,22 +79,6 @@ const hookMethod = (classInstance, methodName, overloadIndex) => {
         );
         console.log("Arguments:", arguments);
       }
-    }
-
-    let retval = this[methodName].apply(this, arguments);
-
-    if (String(retval).includes("1478")) {
-      console.log(
-        "Match found in return value! Class:",
-        classInstance.class.getName(),
-        ", Method:",
-        methodName,
-        ", Overload Index:",
-        overloadIndex,
-      );
-      console.log("Return value:", retval);
-    }
-
-    return retval;
-  };
-};
+      return rval;
+    };
+}
