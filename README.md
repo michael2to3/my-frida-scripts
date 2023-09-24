@@ -25,6 +25,7 @@ This repository contains various Frida scripts useful for dynamic analysis of An
 | Name                | Description                                     |
 |---------------------|-------------------------------------------------|
 | `hook_with_arg.js`  | Hooks into specified classes and methods, logs arguments and return values containing the text "1478". |
+| `trace_all.js`      | Script for dynamically tracing Java function calls within a given package. |
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
