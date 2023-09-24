@@ -1,11 +1,12 @@
 const matchText = "1478";
+const classes = ["com.example"];
+
 setTimeout(main, 5000);
 
 function main() {
   Java.perform(() => {
     Java.enumerateLoadedClasses({
       onMatch: (className) => {
-        const classes = ["com.example"];
         if (
           classes.some((substring) => className.includes(substring))
         ) {
